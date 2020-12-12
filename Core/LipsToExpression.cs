@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Core.Abstracts;
@@ -10,27 +9,28 @@ namespace Core
 {
     public class LipsToExpression : Visitor<Expression>
     {
-        private IDictionary<string, Expression> _contour = new Dictionary<string, Expression>();
-        
-        public Expression Resolve(IToken token, IDictionary<string, Expression> contour)
+        private Contour<Expression> _contour = new Contour<Expression>();
+
+        public Expression Resolve(IToken token, Contour<Expression> contour)
         {
             _contour = contour;
-            
+
             return Visit(token);
         }
-        
+
         public override Expression Visit(UnaryToken unaryToken)
         {
             var (expressionKey, type) = MapUnaryOpToExpressionType(unaryToken.Op);
 
             return Expression.MakeUnary(expressionKey, Expression.Convert(Visit(unaryToken.Expr), type), type);
         }
-        
+
         public override Expression Visit(BinaryOperatorToken binaryOperatorToken)
         {
             var (expressionKey, type) = MapBinaryOpToExpressionType(binaryOperatorToken.Op);
 
-            return Expression.MakeBinary(expressionKey, Expression.Convert(Visit(binaryOperatorToken.Expr1), type), Expression.Convert(Visit(binaryOperatorToken.Expr2), type));
+            return Expression.MakeBinary(expressionKey, Expression.Convert(Visit(binaryOperatorToken.Expr1), type),
+                Expression.Convert(Visit(binaryOperatorToken.Expr2), type));
         }
 
         public override Expression Visit(NumberToken numberToken)
@@ -40,41 +40,56 @@ namespace Core
 
         public override Expression Visit(ConditionalToken conditionalToken)
         {
-            return Expression.Condition(Visit(conditionalToken.CondExpr), Visit(conditionalToken.IfExpr), Visit(conditionalToken.ElseExpr));
+            return Expression.Condition(Visit(conditionalToken.CondExpr), Visit(conditionalToken.IfExpr),
+                Visit(conditionalToken.ElseExpr));
         }
-        
+
         public override Expression Visit(ParameterToken parameterToken)
         {
-            return _contour[parameterToken.Name];
+            var flag = _contour.Lookup(parameterToken.Name, out var result);
+
+            if (!flag)
+            {
+                throw new Exception($"Unbound parameter {parameterToken.Name}");
+            }
+            
+            return result;
         }
 
         public override Expression Visit(FunctionCallToken functionCallToken)
         {
-            var flag = _contour.TryGetValue(functionCallToken.Name, out var functionDef);
+            var flag = _contour.Lookup(functionCallToken.Name, out var functionDef);
 
             if (!flag)
             {
-                functionDef = Expression.Convert(Expression.Property(Expression.Constant(_contour), "Item", Expression.Constant(functionCallToken.Name)), typeof(LambdaExpression));
+                functionDef = Expression.Property(Expression.Constant(_contour), "Item", Expression.Constant(functionCallToken.Name));
+
+                functionDef = Expression.Convert(functionDef, typeof(Expression<Func<object, object>>));
+
+                functionDef = Expression.Invoke(Expression.Constant(Expression.Lambda(functionDef)));
             }
 
-     
-            return Expression.Invoke(functionDef, functionCallToken.Token.Select(Visit).Select(x => Expression.Convert(x, typeof(object))).ToList());
+            return Expression.Invoke(functionDef,
+                functionCallToken.Token.Select(Visit).Select(x => Expression.Convert(x, typeof(object))).ToList());
         }
 
         public override Expression Visit(FunctionDefToken functionDefToken)
         {
-            var formals = functionDefToken.Formals.Select(x => (Key: x, Formal: Expression.Parameter(typeof(object), x))).ToList();
+            _contour = _contour.Push();
             
+            var formals = functionDefToken.Formals
+                .Select(x => (Key: x, Formal: Expression.Parameter(typeof(object), x))).ToList();
+
             foreach (var (key, expression) in formals)
             {
-                _contour[key] = expression;
+                _contour.Add(key, expression);
             }
-            
-            var functionExpr = Expression.Lambda(Visit(functionDefToken.Body), formals.Select(x => x.Formal));
-            
-            _contour[functionDefToken.Name] = functionExpr;
 
-            return functionExpr;
+            var functionExpr = Expression.Lambda(Expression.Convert(Visit(functionDefToken.Body), typeof(object)), formals.Select(x => x.Formal));
+
+            _contour = _contour.Pop();
+
+            return _contour.Add(functionDefToken.Name, functionExpr);
         }
 
         private static (ExpressionType expressionKey, Type type) MapBinaryOpToExpressionType(string op)
@@ -92,7 +107,7 @@ namespace Core
                 "!=" => (ExpressionType.NotEqual, typeof(object))
             };
         }
-        
+
         private static (ExpressionType expressionKey, Type type) MapUnaryOpToExpressionType(string op)
         {
             return op switch

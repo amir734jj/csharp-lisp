@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Core.Abstracts;
@@ -19,7 +18,7 @@ namespace Core
 
         public Func<T> Simmulate<T>(string program)
         {
-            var contour = new Dictionary<string, Expression>();
+            var contour = new Contour<Expression>();
 
             var codeBlocks = program.Split(Environment.NewLine)
                 .Where(x => !string.IsNullOrWhiteSpace(x))
@@ -36,7 +35,7 @@ namespace Core
                     {
                         var body = new LipsToExpression().Resolve(result, contour);
 
-                        return Expression.Lambda(codeBlocks.Count == i + 1 ? Expression.Convert(body, typeof(T)) : body);
+                        return Expression.Lambda(body);
                     }
 
                     throw new Exception("Parsing failed for: " + codeBlock);
@@ -45,7 +44,7 @@ namespace Core
 
             var d = expressions.Last().Compile();
 
-            return () => (T)d.DynamicInvoke();
+            return () => (T)Convert.ChangeType(d.DynamicInvoke(), typeof(T));
         }
     }
 }
