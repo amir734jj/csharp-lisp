@@ -48,18 +48,18 @@ namespace Core
                 .Label("binaryOperator")
                 .Map(x => (IToken) new BinaryOperatorToken(x.Item1.Item1, x.Item1.Item2, x.Item2));
             
-            var uniaryOperatorP = Choice("!", "-").And(WS1)
-                .And(Rec(() => recP))
+            var unaryOperatorP = Choice("!", "-").AndLTry(WS1)
+                .AndTry(Rec(() => recP))
                 .Label("unaryOperator")
                 .Map(x => (IToken) new UnaryToken(x.Item1, x.Item2));
 
             var functionCallP = nameP.AndL(WS1).And(Many(Rec(() => recP).AndL(WS))).Label("functionCall")
                 .Map(x => (IToken) new FunctionCallToken(x.Item1, (x.Item2 ?? Enumerable.Empty<IToken>()).ToArray()));
 
-            var functionDefP = StringP("defun").AndR(WS1)
-                .AndR(nameP).AndL(WS1)
-                .And(Between(CharP('('), Many(WS.AndR(nameP.AndL(WS))), CharP(')'))).AndL(WS1)
-                .And(Rec(() => recP))
+            var functionDefP = StringP("defun").AndRTry(WS1)
+                .AndRTry(nameP).AndLTry(WS1)
+                .AndTry(Between(CharP('('), Many(WS.AndR(nameP.AndL(WS))), CharP(')'))).AndL(WS1)
+                .AndTry(Rec(() => recP))
                 .Label("functionDef")
                 .Map(x => (IToken) new FunctionDefToken(x.Item1.Item1,
                     (x.Item1.Item2 ?? Enumerable.Empty<string>()).ToArray(),
@@ -67,7 +67,7 @@ namespace Core
 
             _expressionP = Between(
                 CharP('('),
-                Choice(binaryOperatorP, uniaryOperatorP, conditionalP, functionDefP, functionCallP),
+                Choice(binaryOperatorP, unaryOperatorP, conditionalP, functionDefP, functionCallP),
                 CharP(')')
             );
 

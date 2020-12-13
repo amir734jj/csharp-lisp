@@ -29,7 +29,7 @@ namespace Core
             var expressions = codeBlocks
                 .Select((codeBlock, i) =>
                 {
-                    var (status, result, _) = _parser.Parse(codeBlock);
+                    var (status, result, error) = _parser.Parse(codeBlock);
 
                     if (status == ReplyStatus.Ok)
                     {
@@ -38,7 +38,7 @@ namespace Core
                         return Expression.Lambda(body);
                     }
 
-                    throw new Exception("Parsing failed for: " + codeBlock);
+                    throw new Exception("Parsing failed for: " + codeBlock + error.ToString());
                 })
                 .ToList();
 

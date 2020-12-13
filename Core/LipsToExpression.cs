@@ -64,7 +64,10 @@ namespace Core
             {
                 functionDef = Expression.Property(Expression.Constant(_contour), "Item", Expression.Constant(functionCallToken.Name));
 
-                functionDef = Expression.Convert(functionDef, typeof(Expression<Func<object, object>>));
+                var genericFuncType =
+                    typeof(Expression<>).MakeGenericType(StaticFuncType(functionCallToken.Token.Length));
+                
+                functionDef = Expression.Convert(functionDef, genericFuncType);
 
                 functionDef = Expression.Invoke(Expression.Constant(Expression.Lambda(functionDef)));
             }
@@ -114,6 +117,19 @@ namespace Core
             {
                 "!" => (ExpressionType.Not, typeof(bool)),
                 "-" => (ExpressionType.Negate, typeof(double)),
+            };
+        }
+
+        private static Type StaticFuncType(int count)
+        {
+            return count switch
+            {
+                0 => typeof(Func<>).MakeGenericType(typeof(object)),
+                1 => typeof(Func<,>).MakeGenericType(typeof(object), typeof(object)),
+                2 => typeof(Func<,,>).MakeGenericType(typeof(object), typeof(object), typeof(object)),
+                3 => typeof(Func<,,,>).MakeGenericType(typeof(object), typeof(object), typeof(object), typeof(object)),
+                _ => throw new Exception(
+                    $"function with {count} many formals is not supported")
             };
         }
     }
