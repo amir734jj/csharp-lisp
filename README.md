@@ -13,9 +13,9 @@ TODO:
 - better error handling in the paster
 
 Library:
-- FParsec
-- C# Expression Tree for back-end
-- Supporting Recursion
+- FParsec for parsing
+- C# Expression Tree for the back-end of compiler
+- ExpressionTreeToString for debugging 
 
 Example:
 
