@@ -9,7 +9,7 @@ Supports:
 - shadowing of variables thanks to contours
 
 TODO:
-- unary/binary expression (-) is ambiguous for the parser combinator 
+- ~~unary/binary expression (-) is ambiguous for the parser combinator~~ 
 - better error handling in the paster
 - add standard libary support (e.g. `Console.log(...)`)
 
