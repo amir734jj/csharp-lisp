@@ -11,6 +11,7 @@ Supports:
 TODO:
 - unary/binary expression (-) is ambiguous for the parser combinator 
 - better error handling in the paster
+- add standard libary support (e.g. `Console.log(...)`)
 
 Libraries:
 - FParsec for parsing
