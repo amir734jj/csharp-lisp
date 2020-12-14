@@ -28,4 +28,4 @@ Example:
 ```
 
 Note:
-- LISP is untyped but C# expression trees are typed. To make things work, I used `object` and `Func<object+>` everyone until compiler encounters conditional, binary, or unary operation or functions as parameters. At that point it tried to apply necessary conversion to make things work.
+- LISP is untyped but C# expression trees are typed. To make things work, I used `object` and `Func<object+>` everyone until compiler encounters conditional, binary/unary operation or functions as parameters. At that point it tries to apply necessary conversion to make things work.
