@@ -5,7 +5,7 @@ Attempting to write a toy LIPS compiler
 - Supports:
 - binary, unary, conditional, functions
 - recursion
-- first class functions
+- first-class functions
 
 TODO:
 - unary/binary expression (-) is ambiguous for the parser combinator 
