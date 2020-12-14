@@ -6,6 +6,7 @@ Attempting to write a toy LIPS compiler
 - binary, unary, conditional, functions
 - recursion
 - first-class functions
+- shadowing of variables thanks to contours
 
 TODO:
 - unary/binary expression (-) is ambiguous for the parser combinator 
