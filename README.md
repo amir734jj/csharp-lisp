@@ -2,7 +2,7 @@
 
 Attempting to write a toy LIPS compiler
 
-- Supports:
+Supports:
 - binary, unary, conditional, functions
 - recursion
 - first-class functions
