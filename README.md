@@ -12,7 +12,7 @@ TODO:
 - unary/binary expression (-) is ambiguous for the parser combinator 
 - better error handling in the paster
 
-Library:
+Libraries:
 - FParsec for parsing
 - C# Expression Tree for the back-end of compiler
 - ExpressionTreeToString for debugging 
