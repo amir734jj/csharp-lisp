@@ -70,6 +70,16 @@ namespace Core
                 functionDef = Expression.Convert(functionDef, genericFuncType);
 
                 functionDef = Expression.Invoke(Expression.Constant(Expression.Lambda(functionDef)));
+                
+                return Expression.Invoke(functionDef,
+                    functionCallToken.Token.Select(Visit).Select(x => Expression.Convert(x, typeof(object))).ToList());
+            }
+
+            if (functionDef is ParameterExpression)
+            {
+                var genericFuncType = StaticFuncType(functionCallToken.Token.Length);
+
+                functionDef = Expression.Convert(functionDef, genericFuncType);
             }
 
             return Expression.Invoke(functionDef,

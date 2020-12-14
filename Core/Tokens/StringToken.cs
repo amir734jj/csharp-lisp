@@ -10,5 +10,10 @@ namespace Core.Tokens
         {
             Str = str;
         }
+        
+        public override string ToString()
+        {
+            return $"{Str}";
+        }
     }
 }

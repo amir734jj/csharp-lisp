@@ -16,5 +16,10 @@ namespace Core.Tokens
             Expr1 = expr1;
             Expr2 = expr2;
         }
+
+        public override string ToString()
+        {
+            return $"({Op} {Expr1} {Expr2})";
+        }
     }
 }

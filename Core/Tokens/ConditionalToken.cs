@@ -16,5 +16,10 @@ namespace Core.Tokens
             IfExpr = ifExpr;
             ElseExpr = elseExpr;
         }
+        
+        public override string ToString()
+        {
+            return $"(if {CondExpr} {IfExpr} {ElseExpr})";
+        }
     }
 }

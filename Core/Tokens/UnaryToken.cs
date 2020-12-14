@@ -13,5 +13,10 @@ namespace Core.Tokens
             Op = op;
             Expr = expr;
         }
+        
+        public override string ToString()
+        {
+            return $"({Op} {Expr})";
+        }
     }
 }

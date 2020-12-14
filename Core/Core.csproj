@@ -5,6 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="ExpressionTreeToString" Version="3.2.53" />
       <PackageReference Include="FParsec.CSharp" Version="12.0.4" />
     </ItemGroup>
 

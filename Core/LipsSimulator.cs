@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using Core.Abstracts;
+using ExpressionTreeToString;
 using FParsec;
 using FParsec.CSharp;
 
@@ -38,10 +39,16 @@ namespace Core
                         return Expression.Lambda(body);
                     }
 
-                    throw new Exception("Parsing failed for: " + codeBlock + error.ToString());
+                    throw new Exception("Parsing failed for: " + codeBlock + error);
                 })
                 .ToList();
-
+            
+#if DEBUG
+            var compiledCode = string.Join("\n\n", expressions.Select(x => x.ToString("C#")));
+#endif
+            
+            Console.WriteLine(compiledCode);
+            
             var d = expressions.Last().Compile();
 
             return () => (T)Convert.ChangeType(d.DynamicInvoke(), typeof(T));

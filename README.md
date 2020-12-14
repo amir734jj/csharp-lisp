@@ -5,9 +5,11 @@ Attempting to write a toy LIPS compiler
 - Supports:
 - binary, unary, conditional, functions
 - recursion
-
-Does not support:
 - first class functions
+
+TODO:
+- unary/binary expression (-) is ambiguous for the parser combinator 
+- better error handling in the paster
 
 Library:
 - FParsec
@@ -15,8 +17,11 @@ Library:
 - Supporting Recursion
 
 Example:
-```
-(defun f (x) (if (< x 3) (+ x 1) (+ (fact x) 12)))
+
+```lisp
 (defun fact (x) (if (<= x 0) 1 (* x (fact (- x 1)))))
-(f (fact 3))
+(defun fn1 (l) (l 3))
+(defun fn2 (l x) (l x))
+(fn1 fact)
+(fn2 fact 3)
 ```

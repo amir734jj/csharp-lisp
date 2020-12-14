@@ -16,5 +16,10 @@ namespace Core.Tokens
             Formals = formals;
             Body = body;
         }
+        
+        public override string ToString()
+        {
+            return $"(defun {string.Join(' ', Formals)} {Body})";
+        }
     }
 }

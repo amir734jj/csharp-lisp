@@ -1,3 +1,4 @@
+using System.Linq;
 using Core.Interfaces;
 
 namespace Core.Tokens
@@ -12,6 +13,11 @@ namespace Core.Tokens
         {
             Name = name;
             Token = token;
+        }
+        
+        public override string ToString()
+        {
+            return $"({Name} {string.Join(' ', Token.Select(x => x.ToString()))})";
         }
     }
 }
