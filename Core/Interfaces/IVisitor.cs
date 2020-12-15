@@ -17,5 +17,7 @@ namespace Core.Interfaces
         T Visit(FunctionCallToken functionCallToken);
 
         T Visit(ParameterToken parameterToken);
+
+        T Visit(StringToken stringToken);
     }
 }

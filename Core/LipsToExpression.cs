@@ -18,6 +18,11 @@ namespace Core
             return Visit(token);
         }
 
+        public override Expression Visit(StringToken stringToken)
+        {
+            return Expression.Constant(stringToken.Str);
+        }
+        
         public override Expression Visit(UnaryToken unaryToken)
         {
             var (expressionKey, type) = MapUnaryOpToExpressionType(unaryToken.Op);
@@ -40,8 +45,11 @@ namespace Core
 
         public override Expression Visit(ConditionalToken conditionalToken)
         {
-            return Expression.Condition(Visit(conditionalToken.CondExpr), Visit(conditionalToken.IfExpr),
-                Visit(conditionalToken.ElseExpr));
+            return Expression.Condition(
+                Visit(conditionalToken.CondExpr),
+                Visit(conditionalToken.IfExpr),
+                Visit(conditionalToken.ElseExpr)
+            );
         }
 
         public override Expression Visit(ParameterToken parameterToken)

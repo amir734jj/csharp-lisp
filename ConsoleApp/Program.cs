@@ -8,6 +8,7 @@ namespace ConsoleApp
         static void Main(string[] args)
         {
             const string code = @"
+(if (! (< 3 5)) ""hooman"" ""amir"")
 (defun fact (x) (if (<= x 0) 1 (* x (fact (- x 1)))))
 (defun fib (x) (if (<= x 0) 0 (if (<= x 1) 1 (+ (fib (- x 1)) (fib (- x 2))))))
 (defun sigma (x) (if (<= x 0) 0 (+ x (sigma (- x 1))))) 
