@@ -19,7 +19,7 @@ Libraries:
 - ExpressionTreeToString for debugging 
 
 Example:
-given the following, `LipsSimulator` will return the result of last line:
+given the following, `LipsSimulator` class will return the result of last line:
 
 ```lisp
 (defun fact (x) (if (<= x 0) 1 (* x (fact (- x 1)))))
