@@ -19,13 +19,16 @@ Libraries:
 - ExpressionTreeToString for debugging 
 
 Example:
+given the following, `LipsSimulator` will return the result of last line:
 
 ```lisp
 (defun fact (x) (if (<= x 0) 1 (* x (fact (- x 1)))))
+(defun fib (x) (if (<= x 0) 0 (if (<= x 1) 1 (+ (fib (- x 1)) (fib (- x 2))))))
 (defun fn1 (l) (l 3))
 (defun fn2 (l x) (l x))
 (fn1 fact)
 (fn2 fact 3)
+-- will print 6
 ```
 
 Note:

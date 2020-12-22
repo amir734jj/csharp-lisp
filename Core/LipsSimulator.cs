@@ -44,7 +44,7 @@ namespace Core
                 .ToList();
             
 #if DEBUG
-            var compiledCode = string.Join("\n\n", expressions.Select(x => x.ToString("C#")));
+            var compiledCode = string.Join("\n\n", expressions.Select(x => x.ToString("Object notation", "C#")));
 #endif
             
             Console.WriteLine(compiledCode);
