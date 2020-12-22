@@ -42,9 +42,9 @@ namespace Core
                 .Label("conditional")
                 .Map(x => (IToken) new ConditionalToken(x.Item1.Item1, x.Item1.Item2, x.Item2));
 
-            var binaryOperatorP = Choice("<=", ">=", "<", ">", "==", "+", "-", "*", "/").And(WS1)
-                .And(Rec(() => recP)).And(WS1)
-                .And(Rec(() => recP))
+            var binaryOperatorP = Choice("<=", ">=", "<", ">", "==", "+", "-", "*", "/").AndTry(WS1)
+                .AndTry(Rec(() => recP)).AndTry(WS1)
+                .AndTry(Rec(() => recP))
                 .Label("binaryOperator")
                 .Map(x => (IToken) new BinaryOperatorToken(x.Item1.Item1, x.Item1.Item2, x.Item2));
             

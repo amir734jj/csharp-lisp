@@ -41,6 +41,11 @@ namespace Core.Abstracts
             throw new NotImplementedException();
         }
 
+        public virtual T Visit(StringToken stringToken)
+        {
+            throw new NotImplementedException();
+        }
+
         protected T Visit(IToken token)
         {
             return token switch
@@ -52,6 +57,7 @@ namespace Core.Abstracts
                 FunctionDefToken functionDefToken => Visit(functionDefToken),
                 FunctionCallToken functionCallToken => Visit(functionCallToken),
                 ParameterToken parameterToken => Visit(parameterToken),
+                StringToken stringToken => Visit(stringToken),
                 _ => throw new ArgumentOutOfRangeException(nameof(token))
             };
         }
