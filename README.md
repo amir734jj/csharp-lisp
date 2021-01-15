@@ -11,12 +11,13 @@ Supports:
 TODO:
 - ~~unary/binary expression (-) is ambiguous for the parser combinator~~ 
 - better error handling in the paster
-- add standard libary support (e.g. `Console.log(...)`)
+- ~add standard libary support (e.g. `Console.log(...)`)~
 
 Libraries:
 - FParsec for parsing
 - C# Expression Tree for the back-end of compiler
-- ExpressionTreeToString for debugging 
+- ExpressionTreeToString for debugging
+- built-in functions: `print`, `println`, `concat`
 
 Example:
 given the following, `LipsSimulator` class will return the result of last line:
@@ -28,7 +29,7 @@ given the following, `LipsSimulator` class will return the result of last line:
 (defun fn2 (l x) (l x))
 (fn1 fact)
 (fn2 fact 3)
--- will print 6
+;; will print 6
 ```
 
 Note:
