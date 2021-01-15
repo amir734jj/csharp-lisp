@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Core.Abstracts;
@@ -11,6 +12,40 @@ namespace Core
     {
         private Contour<Expression> _contour = new Contour<Expression>();
 
+
+        public Contour<Expression> EmptyContour()
+        {
+            static object Print(object o)
+            {
+                Console.Write(o);
+                return o;
+            }
+
+            var printP = Expression.Parameter(typeof(object));
+            var printExpr = Expression.Lambda(Expression.Invoke(Expression.Constant((Func<object, object>) Print), printP), printP);
+
+            static object Println(object o)
+            {
+                Console.WriteLine(o);
+                return o;
+            }
+
+            var printlnP = Expression.Parameter(typeof(object));
+            var printlnExpr = Expression.Lambda(Expression.Invoke(Expression.Constant((Func<object, object>) Println), printlnP), printlnP);
+
+            static object Concat(object o1, object o2) => o1 + o2.ToString();
+            var concatP1 = Expression.Parameter(typeof(object));
+            var concatP2 = Expression.Parameter(typeof(object));
+            var concatExpr = Expression.Lambda(Expression.Invoke(Expression.Constant((Func<object, object, object>) Concat), concatP1, concatP2), concatP1, concatP2);
+            
+            return new Contour<Expression>(new Dictionary<string, Expression>
+            {
+                ["print"] = printExpr,
+                ["println"] = printlnExpr,
+                ["concat"] = concatExpr
+            });
+        }
+        
         public Expression Resolve(IToken token, Contour<Expression> contour)
         {
             _contour = contour;

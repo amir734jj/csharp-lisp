@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Core.Abstracts;
+﻿using System.Linq;
 using Core.Interfaces;
 using Core.Tokens;
 using FParsec;
@@ -23,7 +21,7 @@ namespace Core
             var nameP = Many1Chars(NoneOf(new []{ '"', ' ', '(', ')'})).Label("name");
 
             var variableP = Many1Chars(CharP(char.IsLetter)).Label("variable").Map(x => (IToken) new ParameterToken(x));
-            var stringP = Between(CharP('"'), nameP, CharP('"')).Label("string")
+            var stringP = Between(CharP('"'), ManyChars(NoneOf(new []{'"'})).Label("stringPValue"), CharP('"')).Label("string")
                 .Map(x => (IToken) new StringToken(x));
 
             var numberP = Int.Lbl("number").Map(x => (IToken) new NumberToken(x));

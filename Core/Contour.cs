@@ -5,10 +5,20 @@ namespace Core
 {
     public class Contour<T>
     {
-        private readonly Dictionary<string, T> _table = new Dictionary<string, T>();
+        private readonly Dictionary<string, T> _table;
 
         private Contour<T> _parent;
 
+        public Contour(): this(new Dictionary<string, T>())
+        {
+            
+        }
+        
+        public Contour(Dictionary<string, T> immediate)
+        {
+            _table = immediate;
+        }
+        
         public bool Lookup(string key, out T result)
         {
             if (_table.ContainsKey(key))
