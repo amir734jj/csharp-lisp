@@ -64,6 +64,11 @@ namespace Core
             return result;
         }
 
+        public override Expression Visit(Comment comment)
+        {
+            return Expression.Empty();
+        }
+
         public override Expression Visit(FunctionCallToken functionCallToken)
         {
             var flag = _contour.Lookup(functionCallToken.Name, out var functionDef);

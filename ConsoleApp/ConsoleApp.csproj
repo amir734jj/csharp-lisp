@@ -9,4 +9,12 @@
       <ProjectReference Include="..\Core\Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="test.lisp" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+
 </Project>

@@ -8,50 +8,42 @@ using FParsec.CSharp;
 
 namespace Core
 {
-    public class LipsSimulator : StaticConstructor<LipsSimulator>
+    public class LipsSimulator
     {
         private readonly LispParser _parser;
+        
+        private readonly LipsToExpression _expressionWriter;
 
         public LipsSimulator()
         {
-            _parser = LispParser.New();
+            _parser = new LispParser();
+            _expressionWriter = new LipsToExpression();
         }
 
         public Func<T> Simmulate<T>(string program)
         {
             var contour = new Contour<Expression>();
 
-            var codeBlocks = program.Split(Environment.NewLine)
-                .Where(x => !string.IsNullOrWhiteSpace(x))
-                .Where(x => !x.StartsWith("--"))
-                .Select(x => x.Trim())
-                .ToList();
+           var (status, result, error) = _parser.ExpressionsP.ParseString(program);
+           
+           if (status == ReplyStatus.Ok)
+           {
+               var expressions = result
+                   .Select((codeBlock, i) =>
+                   {
+                       var body = _expressionWriter.Resolve(codeBlock, contour);
 
-            var expressions = codeBlocks
-                .Select((codeBlock, i) =>
-                {
-                    var (status, result, error) = _parser.Parse(codeBlock);
+                       return Expression.Lambda(body);
 
-                    if (status == ReplyStatus.Ok)
-                    {
-                        var body = new LipsToExpression().Resolve(result, contour);
+                   })
+                   .ToList();
 
-                        return Expression.Lambda(body);
-                    }
+               var d = expressions.Last().Compile();
 
-                    throw new Exception("Parsing failed for: " + codeBlock + error);
-                })
-                .ToList();
-            
-#if DEBUG
-            var compiledCode = string.Join("\n\n", expressions.Select(x => x.ToString("Object notation", "C#")));
-#endif
-            
-            Console.WriteLine(compiledCode);
-            
-            var d = expressions.Last().Compile();
+               return () => (T)Convert.ChangeType(d.DynamicInvoke(), typeof(T));
+           }
 
-            return () => (T)Convert.ChangeType(d.DynamicInvoke(), typeof(T));
+           throw new Exception("Parsing failed for: " + error.Head);
         }
     }
 }

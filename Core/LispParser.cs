@@ -1,24 +1,21 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Core.Abstracts;
 using Core.Interfaces;
 using Core.Tokens;
 using FParsec;
 using FParsec.CSharp;
+using Microsoft.FSharp.Collections;
 using Microsoft.FSharp.Core;
 using static FParsec.CSharp.CharParsersCS;
 using static FParsec.CSharp.PrimitivesCS;
 
 namespace Core
 {
-    public class LispParser : StaticConstructor<LispParser>
+    public class LispParser
     {
-        private readonly FSharpFunc<CharStream<Unit>, Reply<IToken>> _expressionP;
+        public readonly FSharpFunc<CharStream<Unit>, Reply<FSharpList<IToken>>> ExpressionsP;
 
-        public Reply<IToken> Parse(string code)
-        {
-            return _expressionP.ParseString(code);
-        }
-        
         public LispParser()
         {
             FSharpFunc<CharStream<Unit>, Reply<IToken>> recP = null;
@@ -34,6 +31,8 @@ namespace Core
             var nullP = StringP("null").Lbl("null").Return((IToken) new NullToken());
 
             var atomicP = Choice(numberP, stringP, nullP, variableP).Label("atomic");
+            
+            var commentP = StringP(";;").AndR(ManyChars(NoneOf(new[] {'\n'}))).Map(x => (IToken) new Comment(x));
 
             var conditionalP = StringP("if").AndL(WS1)
                 .AndR(Rec(() => recP)).AndL(WS1)
@@ -65,13 +64,15 @@ namespace Core
                     (x.Item1.Item2 ?? Enumerable.Empty<string>()).ToArray(),
                     x.Item2));
 
-            _expressionP = Between(
+            var expr = Between(
                 CharP('('),
                 Choice(binaryOperatorP, unaryOperatorP, conditionalP, functionDefP, functionCallP),
                 CharP(')')
             );
 
-            recP = atomicP.Or(_expressionP);
+            ExpressionsP = WS.AndR(Many(Choice(expr, commentP), WS, true));
+
+            recP = atomicP.Or(expr).Or(commentP);
         }
     }
 }

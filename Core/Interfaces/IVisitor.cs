@@ -19,5 +19,7 @@ namespace Core.Interfaces
         T Visit(ParameterToken parameterToken);
 
         T Visit(StringToken stringToken);
+        
+        T Visit(Comment stringToken);
     }
 }
