@@ -39,7 +39,7 @@ namespace Core
                 .Label("conditional")
                 .Map(x => (IToken) new ConditionalToken(x.Item1.Item1, x.Item1.Item2, x.Item2));
 
-            var binaryOperatorP = Choice("<=", ">=", "<", ">", "==", "+", "-", "*", "/").AndTry(WS1)
+            var binaryOperatorP = Choice("<=", ">=", "<", ">", "==", "+", "-", "*", "/", "^").AndTry(WS1)
                 .AndTry(Rec(() => recP)).AndTry(WS1)
                 .AndTry(Rec(() => recP))
                 .Label("binaryOperator")
@@ -64,7 +64,7 @@ namespace Core
 
             var expr = Between(
                 CharP('('),
-                Choice(binaryOperatorP, unaryOperatorP, conditionalP, functionDefP, functionCallP),
+                Choice(binaryOperatorP, unaryOperatorP, conditionalP, functionDefP, functionCallP, atomicP),
                 CharP(')')
             );
 

@@ -164,8 +164,9 @@ namespace Core
                 "-" => (ExpressionType.Subtract, typeof(double)),
                 "/" => (ExpressionType.Divide, typeof(double)),
                 "*" => (ExpressionType.Multiply, typeof(double)),
+                "^" =>  (ExpressionType.Power, typeof(double)),
                 "==" => (ExpressionType.Equal, typeof(object)),
-                "!=" => (ExpressionType.NotEqual, typeof(object))
+                "!=" => (ExpressionType.NotEqual, typeof(object)),
             };
         }
 
