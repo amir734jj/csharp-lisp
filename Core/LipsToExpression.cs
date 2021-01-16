@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -33,16 +34,67 @@ namespace Core
             var printlnP = Expression.Parameter(typeof(object));
             var printlnExpr = Expression.Lambda(Expression.Invoke(Expression.Constant((Func<object, object>) Println), printlnP), printlnP);
 
-            static object Concat(object o1, object o2) => o1 + o2.ToString();
+            static string LocalToString(object val) => val switch
+            {
+                null => "null",
+                string _ => val.ToString(),
+                decimal _ => val.ToString(),
+                IEnumerable enumerable2 =>
+                    $"[{string.Join(", ", enumerable2.Cast<object>().Select(x => x.ToString()))}]",
+                _ => val.ToString()
+            };
+
+            static object Concat(object o1, object o2) => LocalToString(o1) + LocalToString(o2);
+
             var concatP1 = Expression.Parameter(typeof(object));
             var concatP2 = Expression.Parameter(typeof(object));
             var concatExpr = Expression.Lambda(Expression.Invoke(Expression.Constant((Func<object, object, object>) Concat), concatP1, concatP2), concatP1, concatP2);
-            
+
+            static object Single(object o) => new[] {o};
+
+            var singleP = Expression.Parameter(typeof(object));
+            var singleExpr = Expression.Lambda(Expression.Invoke(Expression.Constant((Func<object, object>) Single), singleP), singleP);
+
+            static object Append(object o1, object o2)
+            {
+                o1 ??= new object[] { };
+                
+                o2 ??= new object[] { };
+                
+                return ((object[]) o1).Concat((object[]) o2).ToArray();
+            }
+
+            var appendP1 = Expression.Parameter(typeof(object));
+            var appendP2 = Expression.Parameter(typeof(object));
+            var appendExpr = Expression.Lambda(Expression.Invoke(Expression.Constant((Func<object, object, object>) Append), appendP1, appendP2), appendP1, appendP2);
+
+            static object Head(object o1) => ((object[]) o1).FirstOrDefault();
+            var headP = Expression.Parameter(typeof(object));
+            var headExpr = Expression.Lambda(Expression.Invoke(Expression.Constant((Func<object, object>) Head), headP), headP);
+
+            static object Tail(object o1) => ((object[]) o1).Skip(1).ToArray();
+            var tailP = Expression.Parameter(typeof(object));
+            var tailExpr = Expression.Lambda(Expression.Invoke(Expression.Constant((Func<object, object>) Tail), tailP), tailP);
+
+            static object IsNull(object o1) => o1 == null;
+            var isNullP = Expression.Parameter(typeof(object));
+            var isNullExpr = Expression.Lambda(Expression.Invoke(Expression.Constant((Func<object, object>) IsNull), isNullP), isNullP);
+
+            static object Return(object o1) => o1 == null;
+            var returnP = Expression.Parameter(typeof(object));
+            var returnExpr = Expression.Lambda(Expression.Invoke(Expression.Constant((Func<object, object>) Return), returnP), returnP);
+
             return new Contour<Expression>(new Dictionary<string, Expression>
             {
                 ["print"] = printExpr,
                 ["println"] = printlnExpr,
-                ["concat"] = concatExpr
+                ["concat"] = concatExpr,
+                ["single"] = singleExpr,
+                ["append"] = appendExpr,
+                ["head"] = headExpr,
+                ["tail"] = tailExpr,
+                ["return"] = returnExpr,
+                ["isNull"] = isNullExpr
             });
         }
         
@@ -63,6 +115,11 @@ namespace Core
             var (expressionKey, type) = MapUnaryOpToExpressionType(unaryToken.Op);
 
             return Expression.MakeUnary(expressionKey, Expression.Convert(Visit(unaryToken.Expr), type), type);
+        }
+
+        public override Expression Visit(NullToken nullToken)
+        {
+            return Expression.Constant(null);
         }
 
         public override Expression Visit(BinaryOperatorToken binaryOperatorToken)

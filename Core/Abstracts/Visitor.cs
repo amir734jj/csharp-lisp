@@ -51,6 +51,11 @@ namespace Core.Abstracts
             throw new NotImplementedException();
         }
 
+        public virtual T Visit(NullToken nullToken)
+        {
+            throw new NotImplementedException();
+        }
+
         protected T Visit(IToken token)
         {
             return token switch
@@ -64,6 +69,7 @@ namespace Core.Abstracts
                 ParameterToken parameterToken => Visit(parameterToken),
                 StringToken stringToken => Visit(stringToken),
                 Comment comment => Visit(comment),
+                NullToken nullToken => Visit(nullToken),
                 _ => throw new ArgumentOutOfRangeException(nameof(token))
             };
         }

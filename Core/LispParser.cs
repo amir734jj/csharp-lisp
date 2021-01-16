@@ -50,7 +50,7 @@ namespace Core
                 .Label("unaryOperator")
                 .Map(x => (IToken) new UnaryToken(x.Item1, x.Item2));
 
-            var functionCallP = nameP.AndL(WS1).And(Many(Rec(() => recP).AndL(WS))).Label("functionCall")
+            var functionCallP = nameP.AndL(WS1).And(Opt(Many(Rec(() => recP).AndL(WS)))).Label("functionCall")
                 .Map(x => (IToken) new FunctionCallToken(x.Item1, (x.Item2 ?? Enumerable.Empty<IToken>()).ToArray()));
 
             var functionDefP = StringP("defun").AndRTry(WS1)
