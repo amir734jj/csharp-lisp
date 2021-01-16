@@ -37,6 +37,7 @@ namespace Core
             static string LocalToString(object val) => val switch
             {
                 null => "null",
+                bool _ => val.ToString()?.ToLower(),
                 string _ => val.ToString(),
                 decimal _ => val.ToString(),
                 IEnumerable enumerable2 =>
@@ -191,6 +192,11 @@ namespace Core
                 functionCallToken.Token.Select(Visit).Select(x => Expression.Convert(x, typeof(object))).ToList());
         }
 
+        public override Expression Visit(BoolLiteral boolLiteral)
+        {
+            return Expression.Constant(boolLiteral.Value);
+        }
+
         public override Expression Visit(FunctionDefToken functionDefToken)
         {
             _contour = _contour.Push();
@@ -217,6 +223,7 @@ namespace Core
                 "<" => (ExpressionType.LessThan, typeof(double)),
                 "<=" => (ExpressionType.LessThanOrEqual, typeof(double)),
                 ">" => (ExpressionType.GreaterThan, typeof(double)),
+                ">=" => (ExpressionType.GreaterThan, typeof(double)),
                 "+" => (ExpressionType.Add, typeof(double)),
                 "-" => (ExpressionType.Subtract, typeof(double)),
                 "/" => (ExpressionType.Divide, typeof(double)),

@@ -51,6 +51,11 @@ namespace Core.Abstracts
             throw new NotImplementedException();
         }
 
+        public virtual T Visit(BoolLiteral boolLiteral)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual T Visit(NullToken nullToken)
         {
             throw new NotImplementedException();
@@ -70,6 +75,7 @@ namespace Core.Abstracts
                 StringToken stringToken => Visit(stringToken),
                 Comment comment => Visit(comment),
                 NullToken nullToken => Visit(nullToken),
+                BoolLiteral boolLiteral => Visit(boolLiteral),
                 _ => throw new ArgumentOutOfRangeException(nameof(token))
             };
         }

@@ -21,5 +21,9 @@ namespace Core.Interfaces
         T Visit(StringToken stringToken);
         
         T Visit(Comment stringToken);
+        
+        T Visit(BoolLiteral boolLiteral);
+        
+        T Visit(NullToken nullToken);
     }
 }

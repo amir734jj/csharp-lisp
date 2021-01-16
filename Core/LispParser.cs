@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Core.Interfaces;
 using Core.Tokens;
 using FParsec;
@@ -28,7 +29,10 @@ namespace Core
 
             var nullP = StringP("null").Lbl("null").Return((IToken) new NullToken());
 
-            var atomicP = Choice(numberP, stringP, nullP, variableP).Label("atomic");
+            var boolP = StringP("true").Or(StringP("false")).Lbl("bool")
+                .Map(x => (IToken) new BoolLiteral(bool.Parse(x)));
+
+            var atomicP = Choice(numberP, stringP, nullP, boolP, variableP).Label("atomic");
             
             var commentP = StringP(";;").AndR(ManyChars(NoneOf(new[] {'\n'}))).Map(x => (IToken) new Comment(x));
 
