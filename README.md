@@ -48,7 +48,7 @@ given the following, `LipsSimulator` class will return the result of last line:
 (defun triple (x) (* x 3))
 (println (concat "range 3x [3..10]: " (map triple (range 3 5))))
 
-(exit 1)
+(return 1)
 ```
 
 Note:
