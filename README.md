@@ -23,6 +23,9 @@ Example:
 given the following, `LipsSimulator` class will return the result of last line:
 
 ```lisp
+;; test
+(println (if (! (< 3 5)) "hooman" "amir"))
+
 ;; factorial
 (defun fact (x) (if (<= x 0) 1 (* x (fact (- x 1)))))
 (println (concat "fact 12 is: " (fact 12)))
@@ -41,12 +44,19 @@ given the following, `LipsSimulator` class will return the result of last line:
 
 ;; array
 (defun range (x y) (if (> x y) null (append (single x) (range (+ x 1) y))))
-(println (concat "range [3..10]: " (range 3 5)))
+(println (concat "range [3..5]: " (range 3 5)))
 
 ;; map
 (defun map (fn ls) (if (isNull (head ls)) null (append (single (fn (head ls))) (map fn (tail ls)))))
-(defun triple (x) (* x 3))
-(println (concat "range 3x [3..10]: " (map triple (range 3 5))))
+(println (concat "range 3x [3..5]: " (map (defun triple (x) (* x 3)) (range 3 5))))
+
+;; filter
+(defun filter (fn ls) (if (isNull (head ls)) null (append (if (fn (head ls)) (single (head ls)) null) (filter fn (tail ls)))))
+(println (concat "filter range [-3..5] >= 0: " (filter (defun positive (x) (>= x 0)) (range -3 5))))
+
+;; reduce
+(defun reduce (fn ls acc) (if (isNull (head ls)) acc (reduce fn (tail ls) (fn acc (head ls)))))
+(println (concat "Any grater than zero: " (reduce (defun anyPositive (acc c) (if acc true (> c 0))) (range -3 -1) false)))
 
 (return 1)
 ```
