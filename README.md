@@ -23,9 +23,6 @@ Example:
 given the following, `LipsSimulator` class will return the result of last line:
 
 ```lisp
-;; test
-(println (if (! (< 3 5)) "hooman" "amir"))
-
 ;; factorial
 (defun fact (x) (if (<= x 0) 1 (* x (fact (- x 1)))))
 (println (concat "fact 12 is: " (fact 12)))
