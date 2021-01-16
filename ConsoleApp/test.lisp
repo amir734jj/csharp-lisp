@@ -22,9 +22,9 @@
 (println (concat "range [3..10]: " (range 3 5)))
 
 ;; map
-(defun map (fn ls) (if (isNull ls) null (append (single (fn (head ls))) (map fn (tail ls)))))
+(defun map (fn ls) (if (isNull (head ls)) null (append (single (fn (head ls))) (map fn (tail ls)))))
 
 (defun triple (x) (* x 3))
-(println (concat "range 2x[3..10]: " (map triple (range 3 5))))
+(println (concat "range 3x [3..10]: " (map triple (range 3 5))))
 
 (return 1)

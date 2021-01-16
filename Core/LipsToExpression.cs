@@ -80,7 +80,7 @@ namespace Core
             var isNullP = Expression.Parameter(typeof(object));
             var isNullExpr = Expression.Lambda(Expression.Invoke(Expression.Constant((Func<object, object>) IsNull), isNullP), isNullP);
 
-            static object Return(object o1) => o1 == null;
+            static object Return(object o) => o;
             var returnP = Expression.Parameter(typeof(object));
             var returnExpr = Expression.Lambda(Expression.Invoke(Expression.Constant((Func<object, object>) Return), returnP), returnP);
 
@@ -138,7 +138,7 @@ namespace Core
         public override Expression Visit(ConditionalToken conditionalToken)
         {
             return Expression.Condition(
-                Visit(conditionalToken.CondExpr),
+                Expression.Convert(Visit(conditionalToken.CondExpr), typeof(bool)),
                 Visit(conditionalToken.IfExpr),
                 Visit(conditionalToken.ElseExpr)
             );

@@ -33,11 +33,22 @@ given the following, `LipsSimulator` class will return the result of last line:
 
 ;; pi
 (defun pi (c k) (if (< k 0) (* c 4) (+ c (pi (/ (^ -1 k) (+ (* 2 k) 1)) (- k 1)))))
-(println (concat "pi approximation: " (pi 0 (^ 10 4))))
+(println (concat "pi approximation: " (pi 0 (^ 10 3))))
 
 ;; sum
 (defun sigma (x) (if (<= x 0) 0 (+ x (sigma (- x 1))))) 
-(sigma 5)
+(println (concat "sigma of 5: " (sigma 5)))
+
+;; array
+(defun range (x y) (if (> x y) null (append (single x) (range (+ x 1) y))))
+(println (concat "range [3..10]: " (range 3 5)))
+
+;; map
+(defun map (fn ls) (if (isNull (head ls)) null (append (single (fn (head ls))) (map fn (tail ls)))))
+(defun triple (x) (* x 3))
+(println (concat "range 3x [3..10]: " (map triple (range 3 5))))
+
+(exit 1)
 ```
 
 Note:
