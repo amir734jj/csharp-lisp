@@ -31,6 +31,10 @@
 
 ;; reduce
 (defun reduce (fn ls acc) (if (isNull (head ls)) acc (reduce fn (tail ls) (fn acc (head ls)))))
-(println (concat "Any grater than zero: " (reduce (defun anyPositive (acc x) (if acc true (> x 0))) (range -3 -1) false)))
+(println (concat "Any grater than zero: " (reduce (defun anyPositiveR (acc x) (if acc true (> x 0))) (range -3 -1) false)))
+
+;; any
+(defun any (fn ls) (reduce (defun anyF (acc x) (if acc true (fn x))) ls false))
+(println (concat "Any grater than zero: " (any (defun anyPositive (x) (> x 0)) (range -3 1))))
 
 (identity 1)

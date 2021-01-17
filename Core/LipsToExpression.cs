@@ -140,8 +140,8 @@ namespace Core
         {
             return Expression.Condition(
                 Expression.Convert(Visit(conditionalToken.CondExpr), typeof(bool)),
-                Visit(conditionalToken.IfExpr),
-                Visit(conditionalToken.ElseExpr)
+                Expression.Convert(Visit(conditionalToken.IfExpr), typeof(object)),
+                Expression.Convert(Visit(conditionalToken.ElseExpr), typeof(object))
             );
         }
 
