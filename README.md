@@ -22,7 +22,7 @@ Libraries:
 Supported constructs:
 - `( if condExpr ifExpr elseExpr )`
 - `( defun name (...formals) bodyExpr )`
-- `( name ...actuals )
+- `( name ...actuals )`
 
 Built-in functions:
 - `concat`
