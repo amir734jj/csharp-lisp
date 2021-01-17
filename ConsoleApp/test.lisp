@@ -34,6 +34,3 @@
 (println (concat "Any grater than zero: " (reduce (defun anyPositive (acc c) (if acc true (> c 0))) (range -3 -1) false)))
 
 (return 1)
-
-
-
