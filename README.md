@@ -19,6 +19,16 @@ Libraries:
 - ExpressionTreeToString for debugging
 - built-in functions: `print`, `println`, `concat`
 
+Built-in functions
+- `concat`
+- `print`
+- `println`
+- `head`
+- `tail`
+- `single`
+- `isNull`
+- `return`
+
 Example:
 given the following, `LipsSimulator` class will return the result of last line:
 
