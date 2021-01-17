@@ -19,6 +19,11 @@ Libraries:
 - ExpressionTreeToString for debugging
 - built-in functions: `print`, `println`, `concat`
 
+Supported constructs:
+- `( if condExpr ifExpr elseExpr )`
+- `( defun name (...formals) bodyExpr )`
+- `( name ...actuals )
+
 Built-in functions:
 - `concat`
 - `print`
