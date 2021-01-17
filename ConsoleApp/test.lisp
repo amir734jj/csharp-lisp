@@ -1,5 +1,5 @@
 ;; test
-(println (if (! (< 3 5)) "hooman" "amir"))
+(println (if (! (< 3 5)) "hello" "world"))
 
 ;; factorial
 (defun fact (x) (if (<= x 0) 1 (* x (fact (- x 1)))))
