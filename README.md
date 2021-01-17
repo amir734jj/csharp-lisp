@@ -21,9 +21,9 @@ Libraries:
 
 Supported constructs:
 - atomic: `<string>`, `<float>`, `<bool>` and `null`
-- `( if condExpr ifExpr elseExpr )`
-- `( defun name (...formals) bodyExpr )`
-- `( name ...actuals )`
+- conditional: `( if condExpr ifExpr elseExpr )`
+- function decl: `( defun name (...formals) bodyExpr )`
+- function call: `( name ...actuals )`
 
 Built-in functions:
 - `concat`
