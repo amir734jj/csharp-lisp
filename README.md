@@ -19,7 +19,7 @@ Libraries:
 - ExpressionTreeToString for debugging
 - built-in functions: `print`, `println`, `concat`
 
-Built-in functions
+Built-in functions:
 - `concat`
 - `print`
 - `println`
