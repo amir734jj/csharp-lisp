@@ -81,9 +81,9 @@ namespace Core
             var isNullP = Expression.Parameter(typeof(object));
             var isNullExpr = Expression.Lambda(Expression.Invoke(Expression.Constant((Func<object, object>) IsNull), isNullP), isNullP);
 
-            static object Return(object o) => o;
-            var returnP = Expression.Parameter(typeof(object));
-            var returnExpr = Expression.Lambda(Expression.Invoke(Expression.Constant((Func<object, object>) Return), returnP), returnP);
+            static object Identity(object o) => o;
+            var identityP = Expression.Parameter(typeof(object));
+            var identityExpr = Expression.Lambda(Expression.Invoke(Expression.Constant((Func<object, object>) Identity), identityP), identityP);
 
             return new Contour<Expression>(new Dictionary<string, Expression>
             {
@@ -94,7 +94,7 @@ namespace Core
                 ["append"] = appendExpr,
                 ["head"] = headExpr,
                 ["tail"] = tailExpr,
-                ["return"] = returnExpr,
+                ["identity"] = identityExpr,
                 ["isNull"] = isNullExpr
             });
         }

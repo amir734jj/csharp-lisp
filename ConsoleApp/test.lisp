@@ -33,4 +33,4 @@
 (defun reduce (fn ls acc) (if (isNull (head ls)) acc (reduce fn (tail ls) (fn acc (head ls)))))
 (println (concat "Any grater than zero: " (reduce (defun anyPositive (acc c) (if acc true (> c 0))) (range -3 -1) false)))
 
-(return 1)
+(identity 1)
