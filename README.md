@@ -20,7 +20,7 @@ Libraries:
 - built-in functions: `print`, `println`, `concat`, ...
 
 Supported constructs:
-- atomic: `<string>``, `<float>`, `<bool>` and `null`
+- atomic: `<string>`, `<float>`, `<bool>` and `null`
 - `( if condExpr ifExpr elseExpr )`
 - `( defun name (...formals) bodyExpr )`
 - `( name ...actuals )`
