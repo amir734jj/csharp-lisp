@@ -4,7 +4,7 @@ Toy LIPS compiler that converts one-liner S-Expressions to C# expression trees. 
 
 Supports:
 - binary, unary, conditional, functions
-- recursion
+- recursion thanks to defer in contour lookups
 - first-class functions
 - shadowing of variables thanks to contours
 
