@@ -1,6 +1,6 @@
 # csharp-lisp
 
-Toy LIPS compiler that converts one-liner S-Expressions to C# expression trees. The goal is practice compiler implementation. 
+Toy LIPS compiler that converts one-liner S-Expressions to C# expression trees. The goal is to practice compiler implementation. 
 
 Supports:
 - binary, unary, conditional, functions
