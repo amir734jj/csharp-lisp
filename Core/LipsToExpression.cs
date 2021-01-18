@@ -127,6 +127,11 @@ namespace Core
         {
             var (expressionKey, type) = MapBinaryOpToExpressionType(binaryOperatorToken.Op);
 
+            if (expressionKey == ExpressionType.Equal)
+            {
+                Console.Write("");
+            }
+
             return Expression.MakeBinary(expressionKey, Expression.Convert(Visit(binaryOperatorToken.Expr1), type),
                 Expression.Convert(Visit(binaryOperatorToken.Expr2), type));
         }
@@ -229,7 +234,7 @@ namespace Core
                 "/" => (ExpressionType.Divide, typeof(double)),
                 "*" => (ExpressionType.Multiply, typeof(double)),
                 "^" =>  (ExpressionType.Power, typeof(double)),
-                "==" => (ExpressionType.Equal, typeof(object)),
+                "==" => (ExpressionType.Equal, typeof(double)),
                 "!=" => (ExpressionType.NotEqual, typeof(object)),
             };
         }

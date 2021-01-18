@@ -37,4 +37,16 @@
 (defun any (fn ls) (reduce (defun anyF (acc x) (if acc true (fn x))) ls false))
 (println (concat "Any grater than zero: " (any (defun anyPositive (x) (> x 0)) (range -3 1))))
 
+;; all
+(defun all (fn ls) (reduce (defun allF (acc x) (if acc false (fn x))) ls true))
+(println (concat "All grater than zero: " (all (defun allPositive (x) (> x 0)) (range -3 1))))
+
+;; reverse
+(defun reverse (ls) (if (isNull (head ls)) null (append (reverse (tail ls)) (single (head ls)))))
+(println (concat "Reverse of [1..10]: " (reverse (range 1 10))))
+
+;; find
+(defun find (fn ls) (head (filter fn ls)))
+(println (concat "Find 1 in [1..10]: " (find (defun findF (x) (== x 1)) (range 1 10))))
+
 (identity 1)
