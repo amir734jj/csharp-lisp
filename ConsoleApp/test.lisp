@@ -49,4 +49,8 @@
 (defun find (fn ls) (head (filter fn ls)))
 (println (concat "Find 1 in [1..10]: " (find (defun findF (x) (== x 1)) (range 1 10))))
 
+;; nth
+(defun nth (i ls) (if (isNull (head ls)) null (if (== i 0) (head ls) (nth (- i 1) (tail ls)))))
+(println (concat "nth 1 in [1..10]: " (nth 3 (range 1 10))))
+
 (identity 1)
